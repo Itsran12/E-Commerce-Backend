@@ -15,7 +15,8 @@ describe('POST /api/register', () => {
                 name: "example",
                 phone: "+628123456789",
                 email: "example@gmail.com",
-                password: "Example@2003"
+                password: "Example@2003",
+                role: "ADMIN"
             })
 
         expect(response.status).toBe(201)

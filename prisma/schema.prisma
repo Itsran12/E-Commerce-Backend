@@ -39,6 +39,7 @@ model User {
   token     String?  @db.Text
   role      Role     @default(USER)
   orders    Order[]
+  categories Category[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -47,6 +48,8 @@ model Category {
   id        String    @id @default(uuid())
   name      String    @unique
   products  Product[]
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

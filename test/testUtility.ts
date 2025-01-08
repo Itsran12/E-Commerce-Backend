@@ -1,5 +1,5 @@
 import { prismaClient } from "../src/app/database"
-import { User } from "@prisma/client"
+import { Category, User } from "@prisma/client"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
@@ -18,14 +18,17 @@ export class UserTest {
                 name: "example",
                 phone: "+628123456789",
                 email: "example@gmail.com",
-                password: await bcrypt.hash("Example@2003", 10)
+                password: await bcrypt.hash("Example@2003", 10),
+                role: "ADMIN"
+                
             }
         })
 
         const token = jwt.sign({
             id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            role: user.role
         }, process.env.JWT_SECRET_KEY! , { expiresIn: "1d" })
         
         const updateUser = await prismaClient.user.update({
@@ -52,5 +55,44 @@ export class UserTest {
         }
 
         return user
+    }
+}
+
+export class CategoryTest {
+    static async delete() {
+        await prismaClient.category.deleteMany({
+            where: {
+                user: {
+                    email: "example@gmail.com"
+                }
+            }
+        })
+    }
+
+    static async create(userId: string, data: Partial<{ name: string }> = {}) {
+        await prismaClient.category.create({
+            data: {
+                name: data.name || "test",
+                user: {
+                    connect: {
+                        id: userId
+                    }
+                }
+            }
+        })
+    }
+
+    static async get(userId: string): Promise<Category> {
+        const categories = await prismaClient.category.findFirst({
+            where: {
+                userId: userId
+            }
+        })
+
+        if(!categories) {
+            throw new Error("Category not found")
+        }
+
+        return categories
     }
 }
