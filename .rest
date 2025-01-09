@@ -1,0 +1,17 @@
+### Login
+POST http://localhost:5000/api/login
+Content-Type: application/json
+
+{
+    "email" : "example@gmail.com",
+    "password" : "Example@2003"
+}
+
+###
+POST http://localhost:5000/api/categories
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFkZjQxMDUyLTM4N2YtNGRiNC1hYzg2LTE2OTNkMmY2YTIzNyIsIm5hbWUiOiJleGFtcGxlIiwiZW1haWwiOiJleGFtcGxlQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczNjQxNTc0OSwiZXhwIjoxNzM2NTAyMTQ5fQ.531Z6ZJIlNbMKKDBXP8tN9QP9rJRnxh-GF_P-69gxnk
+
+{
+    "name": "Pakaian"
+}

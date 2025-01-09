@@ -39,11 +39,11 @@ export class UserValidation {
     })
 
     static readonly UPDATE: ZodType = z.object({
-        name: z.string().max(100),
-        phone: phoneNumberSchema,
+        name: z.string().max(100).optional(),
+        phone: phoneNumberSchema.optional(),
         password: z.string().min(8).max(20).refine((value) => {
             return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/.test(value),
             { message: "Must contain at least one lowercase letter, one uppercase letter, one number, and one symbol" }
-        })
+        }).optional()
     })
 }

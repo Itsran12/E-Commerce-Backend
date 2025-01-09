@@ -8,10 +8,6 @@ import { Category, User } from "@prisma/client"
 export class CategoryService {
     static async create(user: User, request: CreateCategoryRequest): Promise<CategoryResponse> {
         const createRequest = Validation.validate(CategoryValidation.CREATE, request)
-        if(!user) {
-            throw new ResponseError(404, "User not found")
-        }
-
         if(user.role !== "ADMIN") {
             throw new ResponseError(403, "Unauthorized: Only admins can create categories")
         }
@@ -30,6 +26,7 @@ export class CategoryService {
             ...createRequest,
             ...{userId: user.id}
         }
+        
         const response = await prismaClient.category.create({
             data: record
         })
@@ -69,11 +66,6 @@ export class CategoryService {
 
     static async update(user: User, request: UpdateCategoryRequest): Promise<CategoryResponse> {
         const updateRequest = Validation.validate(CategoryValidation.UPDATE, request)
-
-        if(!user) {
-            throw new ResponseError(404, "User not found")
-        }
-
         if(user.role !== "ADMIN") {
             throw new ResponseError(403, "Unauthorized: Only admins can create categories")
         }
@@ -92,10 +84,6 @@ export class CategoryService {
     }
 
     static async delete(user: User, id: string): Promise<CategoryResponse> {
-        if (!user) {
-            throw new ResponseError(404, "User not found")
-        }
-
         if (user.role !== "ADMIN") {
             throw new ResponseError(403, "Unauthorized: Only admins can delete categories")
         }

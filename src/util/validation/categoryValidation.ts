@@ -7,6 +7,6 @@ export class CategoryValidation {
 
     static readonly UPDATE: ZodType = z.object({
         id: z.string().min(1, "Address ID is required"),
-        name: z.string().min(1).max(100).regex(/^[a-zA-Z\s]+$/, "Name must contain only letters and spaces")
+        name: z.string().min(1).max(100).regex(/^[a-zA-Z\s]+$/, "Name must contain only letters and spaces").optional()
     })
 }

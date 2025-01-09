@@ -1,13 +1,13 @@
 import { Category } from "@prisma/client"
 
 export type CategoryResponse = {
+    id: string
     name: string
-    userId: string
 }
 
 export type CreateCategoryRequest = {
     name: string
-    userId: string
+    id: string
 }
 
 export type UpdateCategoryRequest = {
@@ -18,6 +18,6 @@ export type UpdateCategoryRequest = {
 export function toCategoryResponse(category: Category): CategoryResponse {
     return {
         name: category.name,
-        userId: category.userId
+        id: category.id
     }
 }

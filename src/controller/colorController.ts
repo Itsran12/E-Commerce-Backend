@@ -1,13 +1,13 @@
-import { CreateProductRequest, UpdateProductRequest } from "../model/productModel"
-import { ProductService } from "../service/productService"
+import { CreateColorRequest, UpdateColortRequest } from "../model/colorModel"
+import { ColorService } from "../service/colorService"
 import { UserRequest } from "../util/type/type"
 import { Response, NextFunction } from "express"
 
-export class ProductController {
+export class ColorController {
     static async create(req: UserRequest, res: Response, next: NextFunction) {
         try {
-            const request: CreateProductRequest = req.body as CreateProductRequest
-            const response = await ProductService.create(req.user!, request)
+            const request: CreateColorRequest = req.body as CreateColorRequest
+            const response = await ColorService.createColor(req.user!, request)
             res.status(201).json({
                 data: response
             })
@@ -18,9 +18,8 @@ export class ProductController {
 
     static async get(req: UserRequest, res: Response, next: NextFunction) {
         try {
-            const productId = req.params.id
-            const categoryId = req.query.categoryId as string
-            const response = await ProductService.get(categoryId, productId)
+            const colorId = req.params.id
+            const response = await ColorService.get(colorId)
             res.status(200).json({
                 data: response
             })
@@ -31,8 +30,7 @@ export class ProductController {
 
     static async getAll(req: UserRequest, res: Response, next: NextFunction) {
         try {
-            const categoryId = req.query.categoryId as string
-            const response = await ProductService.getAll(categoryId)
+            const response = await ColorService.getAll()
             res.status(200).json({
                 data: response
             })
@@ -43,9 +41,9 @@ export class ProductController {
 
     static async update(req: UserRequest, res: Response, next: NextFunction) {
         try {
-            const request: UpdateProductRequest = req.body as UpdateProductRequest
+            const request: UpdateColortRequest = req.body as UpdateColortRequest
             request.id = req.params.id
-            const response = await ProductService.update(req.user!, request)
+            const response = await ColorService.update(req.user!, request)
             res.status(200).json({
                 data: response
             })
@@ -56,8 +54,8 @@ export class ProductController {
 
     static async delete(req: UserRequest, res: Response, next: NextFunction) {
         try {
-            const productId = req.params.id
-            await ProductService.delete(req.user!, productId)
+            const colorId = req.params.id
+            await ColorService.delete(req.user!, colorId)
             res.status(200).json({
                 data: "OK"
             })

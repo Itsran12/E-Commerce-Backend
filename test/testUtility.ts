@@ -1,5 +1,5 @@
 import { prismaClient } from "../src/app/database"
-import { Category, User } from "@prisma/client"
+import { Category, Product, User, ProductImage } from "@prisma/client"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
@@ -69,8 +69,8 @@ export class CategoryTest {
         })
     }
 
-    static async create(userId: string, data: Partial<{ name: string }> = {}) {
-        await prismaClient.category.create({
+    static async create(userId: string, data: Partial<{ name: string }> = {}): Promise<Category> {
+        const categories = await prismaClient.category.create({
             data: {
                 name: data.name || "test",
                 user: {
@@ -80,6 +80,8 @@ export class CategoryTest {
                 }
             }
         })
+
+        return categories
     }
 
     static async get(userId: string): Promise<Category> {
@@ -96,3 +98,79 @@ export class CategoryTest {
         return categories
     }
 }
+
+export class ProductTest {
+    static async delete() {
+        await prismaClient.product.deleteMany({
+            where: { category: { user: { email: "example@gmail.com" }}}
+        })
+    }
+
+    static async create(categoryId: string, data: Partial<{ name: string, description: string, price: number, stock: number}> = {}): Promise<Product> {
+        const products = await prismaClient.product.create({
+            data: {
+                name: data.name || "test",
+                description: data.description || "test",
+                price: data.price || 10000,
+                stock: data.stock || 10,
+                category: {
+                    connect: {
+                        id: categoryId
+                    }
+                }
+            }
+        })
+        
+        return products
+    }
+
+    static async get(categoryId: string): Promise<Product> {
+        const products = await prismaClient.product.findFirst({
+            where: {
+                categoryId: categoryId
+            }
+        })
+
+        if(!products) {
+            throw new Error("Category not found")
+        }
+
+        return products
+    }
+}
+
+export class ColorTest {
+    static async delete() {
+        await prismaClient.color.deleteMany({
+            where: {
+                name: "test"
+            }
+        })
+    }
+
+    static async create(data: Partial<{ name: string, hexCode: string }> = {}) {
+        const colors = await prismaClient.color.create({
+            data: {
+                name: data.name || "test",
+                hexCode: data.hexCode || "test"
+            }
+        })
+
+        return colors
+    }
+
+    static async get() {
+        const colors = await prismaClient.color.findFirst({
+            where: {
+                name: "test"
+            }
+        })
+
+        if(!colors) {
+            throw new Error("color not found")
+        }
+
+        return colors
+    }
+}
+

@@ -99,11 +99,11 @@ model ProductVariant {
   id        String   @id @default(uuid())
   price     Float    
   productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   colorId   String
-  color     Color    @relation(fields: [colorId], references: [id], onDelete: Cascade)
   sizeId    String
+  color     Color    @relation(fields: [colorId], references: [id], onDelete: Cascade)
   size      Size     @relation(fields: [sizeId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   orderItems OrderItem[] @relation("VariantOrderItems")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -125,8 +125,8 @@ model OrderItem {
   quantity    Int
   price       Float
   productId   String
-  product     Product        @relation("ProductOrderItems", fields: [productId], references: [id], onDelete: Cascade)
   variantId   String?
+  product     Product        @relation("ProductOrderItems", fields: [productId], references: [id], onDelete: Cascade)
   variant     ProductVariant? @relation("VariantOrderItems", fields: [variantId], references: [id], onDelete: Cascade)
   orderId     String
   order       Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)

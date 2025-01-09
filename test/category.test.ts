@@ -235,3 +235,4 @@ describe('DELETE /api/categories/:id', () => {
         expect(response.body.errors).toBeDefined()
     })
 })
+
